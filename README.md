@@ -11,6 +11,10 @@ npm i snail-cli -g
 
 > `snail-cli` 是与`snail-fed`配套的命令行工具
 
+
+
+## 使用
+
 ```bash
 snail demo #新建一个名为demo的项目
 cd demo
