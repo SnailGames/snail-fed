@@ -38,6 +38,9 @@ module.exports = {
     },
     module: {
         rules: [{
+            test: /\.(htm|html)$/i,
+            use: 'html-withimg-loader'
+        }, {
             test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
             use: {
                 loader: 'url-loader',
@@ -57,10 +60,12 @@ module.exports = {
             exclude: /(node_modules|bower_components)/
         }, {
             test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-            loader: 'url-loader',
-            query: {
-                limit: 10000,
-                name: 'fonts/[name].[ext]'
+            use: {
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    name: 'fonts/[name].[ext]'
+                }
             }
         }]
     },
