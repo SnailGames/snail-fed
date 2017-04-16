@@ -4,6 +4,7 @@ var glob = require('glob')
 var config = require('../config')
 var HtmlwebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
+var InjectProjectInfo = require('../plugins/InjectProjectInfo')
     // 获取指定路径下的入口文件
 function getEntries(globPath) {
     var files = glob.sync(globPath),
@@ -15,7 +16,7 @@ function getEntries(globPath) {
     })
     return entries
 }
-var plugins = [new webpack.LoaderOptionsPlugin({ options: { postcss: [require('autoprefixer')] } })]
+var plugins = [new InjectProjectInfo(), new webpack.LoaderOptionsPlugin({ options: { postcss: [require('autoprefixer')] } })]
 var entries = getEntries('./src/js/*.js')
 Object.keys(entries).forEach(function(name) {
     var plugin = new HtmlwebpackPlugin({
@@ -23,7 +24,8 @@ Object.keys(entries).forEach(function(name) {
         template: './src/' + name + '.html',
         inject: true,
         // 每个html引用的js模块，也可以在这里加上vendor等公用模块
-        chunks: [name]
+        chunks: [name],
+        minify: false
     })
     plugins.push(plugin)
 })
@@ -39,7 +41,7 @@ module.exports = {
     module: {
         rules: [{
             test: /\.(htm|html)$/i,
-            use: 'html-withimg-loader'
+            loader: 'html-withimg-loader'
         }, {
             test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
             use: {
