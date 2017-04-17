@@ -41,7 +41,12 @@ module.exports = {
     module: {
         rules: [{
             test: /\.(htm|html)$/i,
-            loader: 'html-withimg-loader'
+            use: {
+                loader: 'html-withimg-loader',
+                options: {
+                    min : process.env.NODE_ENV === 'production' ? (true) : (false)
+                }
+            }
         }, {
             test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
             use: {

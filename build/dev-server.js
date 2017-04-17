@@ -31,7 +31,7 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 
 app.get('/:pagename', function(req, res, next) {
-    var pagename = req.params.pagenaeme ? req.params.pagenaeme + '.html' : 'index.html'
+    var pagename = (req.params.pagename&&req.params.pagename.match(/.html?$/)) ? req.params.pagename : 'index.html'
     var filepath = path.join(compiler.outputPath, pagename)
         // 使用webpack提供的outputFileSystem
     compiler.outputFileSystem.readFile(filepath, function(err, result) {
