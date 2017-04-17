@@ -1,4 +1,4 @@
-var projectInfo = require('../config/project-info')
+var projectInfo = require('../config/project.info')
 
 function InjectProjectInfo() {
 
