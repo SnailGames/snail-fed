@@ -8,7 +8,7 @@ InjectProjectInfo.prototype.apply = function(compiler) {
         compilation.plugin('html-webpack-plugin-before-html-processing', function(htmlPluginData, callback) {
             var infoInjected = JSON.stringify(projectInfo)
             var splits = htmlPluginData.html.split('</head>')
-            htmlPluginData.html = splits[0] + '<!--' + infoInjected.replace(/['"{}]/g, '') + '-->' + splits[1]
+            htmlPluginData.html = splits[0] + '<!--' + infoInjected.replace(/['"{}]/g, '') + '-->\n</head>' + splits[1]
             callback(null, htmlPluginData)
         });
     })
