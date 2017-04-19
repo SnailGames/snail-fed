@@ -7,7 +7,7 @@ var opn = require('opn')
 
 var app = express()
 var compiler = webpack(webpackConfig)
-var port = 8080
+var port = config.dev.port
 var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var uri = "http://localhost:" + port
 
