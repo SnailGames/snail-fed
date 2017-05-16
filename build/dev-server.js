@@ -1,5 +1,6 @@
 var express = require('express')
 var webpack = require('webpack')
+var proxyMiddleware = require('http-proxy-middleware')
 var config = require('../config')
 var webpackConfig = require('../config/webpack.dev.config')
 var path = require('path')
@@ -10,7 +11,7 @@ var compiler = webpack(webpackConfig)
 var port = config.dev.port
 var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var uri = "http://localhost:" + port
-
+var proxyTable = config.dev.proxyTable
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
     publicPath: webpackConfig.output.publicPath,
@@ -26,12 +27,19 @@ compiler.plugin('compilation', function(compilation) {
         cb()
     })
 })
+Object.keys(proxyTable).forEach(function(context) {
+    var options = proxyTable[context]
+    if (typeof options === 'string') {
+        options = { target: options }
+    }
+    app.use(proxyMiddleware(options.filter || context, options))
+})
 
 app.use(devMiddleware)
 app.use(hotMiddleware)
 
 app.get('/:pagename', function(req, res, next) {
-    var pagename = (req.params.pagename&&req.params.pagename.match(/.html?$/)) ? req.params.pagename : 'index.html'
+    var pagename = (req.params.pagename && req.params.pagename.match(/.html?$/)) ? req.params.pagename : 'index.html'
     var filepath = path.join(compiler.outputPath, pagename)
         // 使用webpack提供的outputFileSystem
     compiler.outputFileSystem.readFile(filepath, function(err, result) {

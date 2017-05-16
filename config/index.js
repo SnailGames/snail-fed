@@ -11,6 +11,7 @@ module.exports = {
         port: port,
         autoOpenBrowser: true,
         cssSourceMap: false,
+        proxyTable: {},
         assetsPublicPath: 'http://localhost:' + port + "/"
     }
 }
